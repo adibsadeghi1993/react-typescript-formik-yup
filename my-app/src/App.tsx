@@ -1,11 +1,19 @@
 import React from 'react';
+import { Routes, Route, Link } from "react-router-dom";
 
 import './App.css';
+import EditCity from './components/EditCity/EditCity';
+import Home from './components/Home';
 
 function App() {
   return (
     <div className="App">
-     
+      <Routes>
+      <Route path="/" element={<Home />}>
+          <Route path=":cityId" element={<EditCity />} />
+          
+        </Route>
+      </Routes>
     </div>
   );
 }
