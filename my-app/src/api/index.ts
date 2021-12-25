@@ -11,7 +11,7 @@ const getAllCities= async()=>{
     return data
   
 }
-const getcity= async(id:number)=>{
+const getcity= async(id:number | undefined)=>{
    
       const {data}=await client.get(`/cities/${id}`)
       return data

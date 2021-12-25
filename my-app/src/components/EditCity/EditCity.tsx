@@ -1,41 +1,94 @@
-import React from "react";
-import { useParams } from "react-router-dom";
+import { withFormik, FormikProps } from "formik";
+import * as Yup from "yup";
 
-interface Props {}
+interface FormValues {
+  cityName: string;
+  description: string;
+}
 
-const EditCity = (props: Props) => {
-  const { cityId } = useParams();
-  console.log(cityId);
+interface OtherProps {
+    cityName?: any;
+}
+
+interface MyFormProps {
+  initialcityName?: string;
+  initialdescription?: string;
+}
+
+const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
+  const {
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    isSubmitting,
+ 
+  } = props;
+
   return (
-    <div className="mt-3 row">
-      <div className="cols-12 cols-sm-8 offset-sm-2 col-md-6 offset-md-3">
-        <form>
-          <div className="mt-3">
-            <label className="form-label text-start w-100" htmlFor="cityName">
-              CityName
-            </label>
-            <input type="text" className="form-control" />
-          </div>
-          <div className="mt-3">
-            <label className="form-label text-start w-100" htmlFor="cityName">
-              ImageUrl
-            </label>
-            <input type="text" className="form-control" />
-          </div>
-          <div className="mt-3">
-            <label className="form-label text-start w-100">description</label>
-            <textarea
-              className="form-control text-start"
-              id="exampleFormControlTextarea1"
-            ></textarea>
-          </div>
-          <div className="mt-3">
-              <button className="btn btn-warning w-100">submit</button>
-          </div>
-        </form>
+    <>
+      <div className="row mt-5">
+    
+        <div className="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3">
+          <form onSubmit={handleSubmit}>
+            .
+            <div>
+              <label className="form-label">cityName</label>
+              <input
+                className="form-control"
+                type="cityName"
+                name="cityName"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.cityName}
+              />
+            </div>
+            <label className="form-label">description</label>
+            <input
+              className="form-control"
+              type="description"
+              name="description"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.description}
+            />
+            <button
+              type="submit"
+              className="btn btn-warning w-100 mt-3"
+              disabled={
+                isSubmitting ||
+                !!(errors.cityName && touched.cityName) ||
+                !!(errors.description && touched.description)
+              }
+            >
+              Sign In
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
-export default EditCity;
+const CreateCity = withFormik<MyFormProps, FormValues>({
+  mapPropsToValues: (props) => ({
+    cityName: props.initialcityName || "adib",
+    description: props.initialdescription || "jjj",
+  }),
+
+  validationSchema: Yup.object().shape({
+    cityName: Yup.string().required("cityName is required"),
+    description: Yup.string().required("description is required"),
+  }),
+
+  handleSubmit(
+    { cityName, description }: FormValues,
+    { props, setSubmitting, setErrors }
+  ) {
+    console.log(cityName, description);
+  },
+})(InnerForm);
+
+export default CreateCity;

@@ -3,7 +3,8 @@ import { Routes, Route, Link } from "react-router-dom";
 
 import './App.css';
 import Cities from './components/Cities';
-import EditCity from './components/EditCity/EditCity';
+import City from './components/EditCity/City';
+
 
 import Layout from './components/Layout';
 
@@ -15,7 +16,7 @@ function App() {
       <Route path="/" element={<Cities />}/>
          
           
-      <Route path="/:cityId" element={<EditCity />} />
+      <Route path="/:cityId" element={<City />} />
       </Routes>
     </div>
   );
