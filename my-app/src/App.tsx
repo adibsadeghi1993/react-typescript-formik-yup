@@ -2,8 +2,9 @@ import React from 'react';
 import { Routes, Route, Link } from "react-router-dom";
 
 import './App.css';
+import Cities from './components/Cities';
 import EditCity from './components/EditCity/EditCity';
-import Home from './components/Home';
+
 import Layout from './components/Layout';
 
 function App() {
@@ -11,10 +12,10 @@ function App() {
     <div className="App">
       <Layout/>
       <Routes>
-      <Route path="/" element={<Home />}>
-          <Route path=":cityId" element={<EditCity />} />
+      <Route path="/" element={<Cities />}/>
+         
           
-        </Route>
+      <Route path="/:cityId" element={<EditCity />} />
       </Routes>
     </div>
   );
