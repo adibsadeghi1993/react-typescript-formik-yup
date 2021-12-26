@@ -25,6 +25,7 @@ const getcity= async(id:number | undefined)=>{
    
   }
   const updateCity= async(city:city)=>{
+     
 
       const {data}=await client.put(`/cities/${city.id}`,city)
       return data

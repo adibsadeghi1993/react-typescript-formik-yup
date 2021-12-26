@@ -1,14 +1,17 @@
 import React from 'react';
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route,} from "react-router-dom";
+
 
 import './App.css';
 import Cities from './components/Cities';
 import City from './components/EditCity/City';
+import CreateCity from './components/EditCity/CreateCity';
 
 
 import Layout from './components/Layout';
 
 function App() {
+  
   return (
     <div className="App">
       <Layout/>
@@ -17,6 +20,7 @@ function App() {
          
           
       <Route path="/:cityId" element={<City />} />
+      <Route path="/createcity" element={<CreateCity  />} />
       </Routes>
     </div>
   );

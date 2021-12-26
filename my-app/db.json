@@ -2,21 +2,21 @@
   "cities": [
     {
       "id": 1,
-      "cityName": "marivan",
-      "description": "this is best city in kordestan",
-      "image":"https://www.itto.org/iran/image-bin/zarivar-lake-kurdistan.jpg?fillit=700x420"
+      "cityName": "marione",
+      "image": "https://www.itto.org/iran/image-bin/zarivar-lake-kurdistan.jpg?fillit=700x420",
+      "description": "this is best city in kordestan"
     },
     {
-        "id": 2,
-        "cityName": "sanandaj",
-        "description": "this is best city in kordestan",
-        "image":"https://www.itto.org/iran/image-bin/zarivar-lake-kurdistan.jpg?fillit=700x420"
-      },
-      {
-        "id": 3,
-        "cityName": "baneh",
-        "description": "this is best city in kordestan",
-        "image":"https://www.itto.org/iran/image-bin/zarivar-lake-kurdistan.jpg?fillit=700x420"
-      }
+      "id": 3,
+      "cityName": "banjj",
+      "image": "https://www.itto.org/iran/image-bin/zarivar-lake-kurdistan.jpg?fillit=700x420",
+      "description": "this is best city in kordestan"
+    },
+    {
+      "id": 4,
+      "cityName": "ddd",
+      "image": "https://www.itto.org/iran/image-bin/zarivar-lake-kurdistan.jpg?fillit=700x420",
+      "description": "this is  city fffffff"
+    }
   ]
 }

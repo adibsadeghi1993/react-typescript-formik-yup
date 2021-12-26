@@ -3,5 +3,5 @@
   cityName:string,
   description:string
   image:string,
-  id:number
+  id?:any
 }
