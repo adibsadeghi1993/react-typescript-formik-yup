@@ -5,7 +5,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import {useNavigate} from "react-router-dom"
 import { FormEvent } from "react";
-import { number } from "yup";
+
 
 interface Props {
   setCities:React.Dispatch<React.SetStateAction<city[] | null | undefined>>,
@@ -48,7 +48,7 @@ const CreateCity = ({setCities,cities}: Props) => {
      console.log("adib")
      navigate("/")
    }).catch(err=>{
- 
+   console.log(err)
    })
    
   };
