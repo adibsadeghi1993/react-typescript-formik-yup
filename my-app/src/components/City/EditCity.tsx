@@ -11,7 +11,7 @@ interface Props {
   cities: city[] | null | undefined,
 }
 
-const City = ({setCities,cities}: Props) => {
+const EditCity = ({setCities,cities}: Props) => {
   const { cityId } = useParams();
   const navigate=useNavigate()
   console.log(cityId);
@@ -130,4 +130,4 @@ const City = ({setCities,cities}: Props) => {
   );
 };
 
-export default City;
+export default EditCity;
