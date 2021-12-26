@@ -6,9 +6,12 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import {useNavigate} from "react-router-dom"
 
-interface Props {}
+interface Props {
+  setCities:React.Dispatch<React.SetStateAction<city[] | null | undefined>>,
+  cities: city[] | null | undefined,
+}
 
-const City = (props: Props) => {
+const City = ({setCities,cities}: Props) => {
   const { cityId } = useParams();
   const navigate=useNavigate()
   console.log(cityId);
@@ -52,7 +55,7 @@ const City = (props: Props) => {
       description: values.description,
     }).then(res=>{
       console.log(res)
-    
+    setCities(cities?.map(item=>item.id==cityId?{id:cityId,cityName:values.cityName,image:values.image,description:values.description}:item))
     })
     navigate("/")
   };

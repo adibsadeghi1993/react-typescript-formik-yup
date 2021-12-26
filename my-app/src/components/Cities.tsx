@@ -5,22 +5,26 @@ import * as api from "../api/index"
 import { useNavigate } from "react-router-dom";
 
 
-interface Props {}
+interface Props {
+  setCities:React.Dispatch<React.SetStateAction<city[] | null | undefined>>,
+  cities: city[] | null | undefined,
+  setIsLoading:React.Dispatch<React.SetStateAction<boolean>>,
+  isLoading:boolean
 
-const Cities = (props: Props) => {
+
+}
+
+const Cities = ({setCities,cities,isLoading,setIsLoading}: Props) => {
 
  const navigat= useNavigate()
 
-    const [cities, setCities] = useState<city[]| null | undefined>(null)
-    const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [error, setError] = useState<string>("")
  
 useEffect(() => {
     api.getAllCities().then(res=>{
         setIsLoading(true)
         setCities(res)
         setIsLoading(false)
-    }).catch(error=>setError(error.response.message))
+    }).catch(error=>console.log(error))
    
 }, [])
 
@@ -30,7 +34,7 @@ const deleteCity:(id:number)=>void=(id)=>{
     api.deleteCity(id).then(res=>{
         setCities(cities?.filter(item=>item.id!==id))  
     }).catch(error=>{
-        setError(error.response.message)
+      
         setCities(cities)
     })
 }
