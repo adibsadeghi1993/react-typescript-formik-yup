@@ -1,126 +1,141 @@
-import { withFormik, FormikProps } from "formik";
-import { Navigate, useNavigate } from "react-router-dom";
-import { setTimeout } from "timers/promises";
+
+import * as api from "../../api/index";
+import { city } from "../../model/Types";
+import { useFormik } from "formik";
 import * as Yup from "yup";
-import * as api from "../../api/index"
+import {useNavigate} from "react-router-dom"
+import { FormEvent } from "react";
+import { number } from "yup";
 
-interface FormValues {
-  cityName: string;
-  description: string;
-  imageURL:string
+interface Props {
+  setCities:React.Dispatch<React.SetStateAction<city[] | null | undefined>>,
+  cities: city[]|null|undefined ,
 }
 
-interface OtherProps {
+const CreateCity = ({setCities,cities}: Props) => {
  
-}
+  const navigate=useNavigate()
 
-interface MyFormProps {
-  initialcityName?: string;
-  initialdescription?: string;
-  initialimageURL?:string
-}
+ 
 
-const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
-const navigate= useNavigate()
+  const { handleChange, handleBlur, values, errors, touched } = useFormik<{
+    cityName: string;
+    description: string;
+    image: string;
+    id:string
+  }>({
+    initialValues: {
+      cityName: "",
+      description: "",
+      image: "",
+     id:""
+    },
+    onSubmit: (): void => {},
+    validationSchema: Yup.object().shape({
+      cityName: Yup.string().min(3).max(20).required("is required"),
+      description: Yup.string().min(10).max(250).required("is required"),
+      image: Yup.string().min(10).max(250).required("is required"),
+      id: Yup.number().min(1).required("this is should be number"),
+    }),
+   
+  });
+  console.log(values);
+  console.log(errors);
+  const submitForm = (e:FormEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+   api.createCity({id:values.id,image:values.image,cityName:values.cityName,description:values.description}).then(res=>{
+     console.log(res)
+     console.log("adib")
+     navigate("/")
+   }).catch(err=>{
  
-  const {
-    values,
-    errors,
-    touched,
-    handleChange,
-    handleBlur,
-    handleSubmit,
-    isSubmitting,
- 
-  } = props;
+   })
+   
+  };
 
-  const submitHandler=()=>{
- 
-  }
+
+  let statueBtn:boolean = true;
+  if (
+    !errors.cityName &&
+    !errors.description &&
+    !errors.id &&
+    !errors.image ){
+      console.log("hhhhhhhhh")
+     statueBtn=false
+    }
+    
+  
 
   return (
-    <>
-      <div className="row mt-5">
-    
-        <div className="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3">
-          <form onSubmit={handleSubmit}>
-            .
-            <div>
-              <label className="form-label">cityName</label>
-              <input
-                className="form-control"
-                type="cityName"
-                name="cityName"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.cityName}
-              />
-              {errors.cityName && touched.cityName ?<p className="text-danger">{errors.cityName}</p>:null}
-            </div>
-            <label className="form-label">comment</label>
+    <div className="mt-5">
+      <form>
+        <div className="row">
+        <div className="col-12 col-md-8 offset-md-2 mt-3 ">
+            <label className="form-label w-100 text-start">city id</label>
             <input
+              name="id"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values?.id}
+              type="text"
               className="form-control"
-              type="description"
+            />
+            {errors.id && touched.id && <p style={{color:"red"}}>{errors.id}</p>}
+          </div>
+          <div className="col-12 col-md-8 offset-md-2 mt-3 ">
+            <label className="form-label w-100 text-start">city name</label>
+            <input
+              name="cityName"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values?.cityName}
+              type="text"
+              className="form-control"
+            />
+            {errors.cityName && touched.cityName && <p style={{color:"red"}}>{errors.cityName}</p>}
+          </div>
+          <div className="col-12 col-md-8 offset-md-2 mt-3 ">
+            <label className="form-label w-100 text-start">description</label>
+            <textarea
               name="description"
               onChange={handleChange}
               onBlur={handleBlur}
-              value={values.description}
-            />
-             {errors.description && touched.description ?<p className="text-danger">{errors.description}</p>:null}
-              <label className="form-label">imageURL</label>
-            <input
+              value={values?.description}
               className="form-control"
-              type="text"
-              name="imageURL"
+            />
+            {errors.description && touched.description && (
+              <p style={{color:"red"}}>{errors.description}</p>
+            )}
+          </div>
+          <div className="col-12 col-md-8 offset-md-2 mt-3">
+            <label className="form-label  w-100 text-start">imageurl</label>
+            <input
+              name="image"
               onChange={handleChange}
               onBlur={handleBlur}
-              value={values.imageURL}
+              value={values?.image}
+              type="text"
+              className="form-control"
             />
+            {errors.image && touched.image && <p style={{color:"red"}}>{errors.image}</p>}
+          </div>
+          <div className="col-12 col-md-8 offset-md-2 mt-3">
             <button
-              type="submit"
-              className="btn btn-warning w-100 mt-3"
-              onClick={submitHandler}
               disabled={
-                isSubmitting ||
-                !!(errors.cityName && touched.cityName) ||
-                !!(errors.description && touched.description)||!!(errors.imageURL && touched.imageURL)
+                statueBtn
+                
               }
+              type="submit"
+              onClick={submitForm}
+              className="btn btn-warning w-100"
             >
-              addcity
+              Add city
             </button>
-          </form>
+          </div>
         </div>
-      </div>
-    </>
+      </form>
+    </div>
   );
 };
-
-const CreateCity = withFormik<MyFormProps, FormValues>({
-  mapPropsToValues: (props) => ({
-    cityName: "",
-    description: "",
-    imageURL:""
-  }),
-
-  validationSchema: Yup.object().shape({
-    cityName: Yup.string().max(50).min(2).required("cityName is required"),
-    description: Yup.string().max(200).required("description is required"),
-    imageURL: Yup.string().required("imageURL is requied"),
-
-  }),
-
-  handleSubmit(
-    { cityName, description,imageURL }: FormValues,
-    { props, setSubmitting, setErrors }
-  ) {
-    console.log(cityName,description,imageURL);
-    const newCity={id:Math.random()*100,cityName,description,image:imageURL}
-    api.createCity(newCity).then(res=>{
-      console.log(res)
-    
-     
-    })
-  },
-})(InnerForm);
 
 export default CreateCity;

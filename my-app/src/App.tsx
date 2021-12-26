@@ -14,18 +14,20 @@ import { city } from './model/Types';
 function App() {
   const [cities, setCities] = useState<city[]| null | undefined>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [error, setError] = useState<string>("")
+
   
   return (
     <div className="App">
       <Layout/>
+      <div className='container'>
       <Routes>
       <Route path="/" element={<Cities isLoading={isLoading} setIsLoading={setIsLoading} cities={cities} setCities={setCities}  />}/>
          
           
       <Route path="/:cityId" element={<City  cities={cities} setCities={setCities} />} />
-      <Route path="/createcity" element={<CreateCity  />} />
+      <Route path="/createcity" element={<CreateCity cities={cities} setCities={setCities} />} />
       </Routes>
+      </div>
     </div>
   );
 }

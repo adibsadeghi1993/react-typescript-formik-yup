@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import { useParams } from "react-router-dom";
 import * as api from "../../api/index";
 import { city } from "../../model/Types";
@@ -47,7 +47,8 @@ const City = ({setCities,cities}: Props) => {
   });
   console.log(values);
   console.log(errors);
-  const submitForm = () => {
+  const submitForm = (e:FormEvent) => {
+    e.preventDefault()
     api.updateCity({
       id:cityId,
       cityName: values.cityName,
@@ -55,16 +56,26 @@ const City = ({setCities,cities}: Props) => {
       description: values.description,
     }).then(res=>{
       console.log(res)
+      navigate("/")
     setCities(cities?.map(item=>item.id==cityId?{id:cityId,cityName:values.cityName,image:values.image,description:values.description}:item))
     })
-    navigate("/")
+   
   };
+
+  let statueBtn:boolean = true;
+  if (
+    !errors.cityName &&
+    !errors.description &&
+    !errors.image ){
+      console.log("hhhhhhhhh")
+     statueBtn=false
+    }
 
   return (
     <div className="mt-5  container">
       <form>
         <div className="row">
-          <div className="col-12 col-md-6 offset-3 mt-3 ">
+          <div className="col-12 col-md-8 offset-md-2 mt-3 ">
             <label className="form-label w-100 text-start">city name</label>
             <input
               name="cityName"
@@ -74,9 +85,9 @@ const City = ({setCities,cities}: Props) => {
               type="text"
               className="form-control"
             />
-            {errors.cityName && touched.cityName && <p>{errors.cityName}</p>}
+            {errors.cityName && touched.cityName && <p style={{color:"red"}}>{errors.cityName}</p>}
           </div>
-          <div className="col-12 col-md-6 offset-3 mt-3 ">
+          <div className="col-12 col-md-8 offset-md-2 mt-3 ">
             <label className="form-label w-100 text-start">description</label>
             <textarea
               name="description"
@@ -86,10 +97,10 @@ const City = ({setCities,cities}: Props) => {
               className="form-control"
             />
             {errors.description && touched.description && (
-              <p>{errors.description}</p>
+              <p style={{color:"red"}}>{errors.description}</p>
             )}
           </div>
-          <div className="col-12 col-md-6 offset-3 mt-3">
+          <div className="col-12 col-md-8 offset-md-2 mt-3">
             <label className="form-label  w-100 text-start">imageurl</label>
             <input
               name="image"
@@ -99,17 +110,16 @@ const City = ({setCities,cities}: Props) => {
               type="text"
               className="form-control"
             />
-            {errors.image && touched.image && <p>{errors.image}</p>}
+            {errors.image && touched.image && <p style={{color:"red"}}>{errors.image}</p>}
           </div>
-          <div>
+          <div className="col-12 col-md-8 offset-md-2 mt-3">
             <button
               disabled={
-                !!(errors.cityName && touched.cityName) ||
-                !!(errors.description && touched.description) ||
-                !!(errors.image && touched.image)
+                statueBtn
               }
               onClick={submitForm}
-              className="btn btn-warning w-50 mt-3"
+              type="submit"
+              className="btn btn-warning w-100 "
             >
               Edit city
             </button>
